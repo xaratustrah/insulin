@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  
+  <!-- ##################################     HEADER SECTION     ########################################### -->  
+  <head>
+    <!-- Set the charset to UTF-8 -->
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+
+    <!--Resize for mobile displays -->
+    <meta name=viewport content='width=250'>
+
+    <!--Check if JavaScript is active -->
+    <noscript>
+      <img src="no_js.gif"
+           alt="Why did you disable JavaScript?"/>
+    </noscript>
+
+    <!-- The actual code -->
+    <script language="javascript">
+      <!-- do the calculation -->
+      function calculate()
+      {
+      var menge = parseFloat(document.getElementById("menge").value);
+      var dropdown = parseFloat(document.getElementById("dropdown").value);
+      var output = document.getElementById("output");
+      var sport = document.getElementById("sport")
+      
+      var KE_hundret = dropdown / 10;
+      var KE_total = menge * KE_hundret / 100;
+      var KE_factor = 0.5;
+
+      if (!sport.checked){
+      <!-- output.value = "not checked"; -->
+      output.value = KE_total * KE_factor;
+      }
+      else
+      {
+      <!-- output.value="checked"; -->
+      output.value = minus_30p(KE_total * KE_factor);
+      }
+      <!-- output.value = KE_total * KE_factor; -->
+
+      }
+
+      <!-- Return 30% or the value -->
+      function minus_30p(value)
+      {
+      return value - value*30/100;
+      }
+
+
+      <!-- Check for numbers only -->
+      function numbersonly(myfield, e, dec)
+      // copyright 1999 Idocs, Inc. http://www.idocs.com
+      // Distribute this script freely but keep this notice in place
+      {
+      var key;
+      var keychar;
+
+      if(window.event)
+      key = window.event.keyCode;
+      else if(e)
+      key = e.which;
+      else
+      return true;
+      keychar = String.fromCharCode(key);
+
+      // control keys
+      if((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13) || (key == 27))
+      return true;
+
+      // numbers
+      else if((("0123456789").indexOf(keychar) > -1))
+      return true;
+
+      // decimal point jump
+      else if(dec && (keychar == ".")) {
+      myfield.form.elements[dec].focus();
+      return false;
+      } else
+      return false;
+      }
+
+      <!-- Calculating last update -->
+      function last_update()
+      {
+      <!-- from http://www.webdesignerforum.co.uk/topic/32223-how-to-make-an-automatic-last-updated-datetime-in-html/  -->
+      months = ['January', 'Febraury', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      var d=new Date();
+      var weekday=new Array(7);
+      weekday[0]="Sunday";
+      weekday[1]="Monday";
+      weekday[2]="Tuesday";
+      weekday[3]="Wednesday";
+      weekday[4]="Thursday";
+      weekday[5]="Friday";
+      weekday[6]="Saturday";
+
+      var d = new Date();
+      (d.getFullYear());
+
+      var theDate = new Date(document.lastModified);
+      theDate.setTime((theDate.getTime()+(60*60)) )
+      with (theDate) {
+      document.write("<i>Last updated "+weekday[getDay()]+' '+getDate()+' '+months[getMonth()]+' '+d.getFullYear()+' '+getHours()+':'+getMinutes()+" GMT</i>")
+      }
+      }
+
+    </script>
+
+    <!-- CSS syle sheet somes here -->
+    <style type="text/css">
+      body {
+      background-color:#ffb1b4;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      }
+      h4 {
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1px
+      padding: 17px;
+      }
+    </style>
+
+    <!--Here comes the document title-->
+    <title>Insulinrechner</title>
+  </head>
+
+  <!-- ##################################     MAIN SECTION     ########################################### -->
+
+  <body onload="calculate();">
+    <h4>Rechner für Insulineinheiten</h4>
+
+    Menge: <input name="menge" id="menge" value="100" onchange="calculate();"
+		  onkeypress="return numbersonly(this, event)" maxlength="3" size="8"
+		  type="text">&nbsp;g
+    <br>
+    <br>
+    von
+    <select name="dropdown" id="dropdown" onchange="calculate();">
+      <option value="30">Muffin</option>
+      <option value="20">Banane</option>
+      <option value="29.5">Nudeln</option>
+      <option value="35">Vollkornbrot</option>
+      <option value="25.4">Müsli</option>
+    </select>
+    <br>
+    <br>
+    <input type="checkbox" name="sport" id="sport" value="SPORT" onchange="calculate();">Sport?<br>
+    <br>
+    <br>
+    sind
+    <input id="output" value="" size="8" readonly></input>
+    Insulineinheiten.
+    <br>
+    <br>
+    <br>
+    <br>
+    <hr>
+
+    <!-- ##################################     FOOTER SECTION     ########################################### -->
+    <small>Alle Angaben ohne Gewähr.
+      <div id="textbox">
+        <p style="float:left">
+          <br>
+          <script language="javascript">last_update();</script>
+        </p>
+        <p style="float:right">
+          <br>
+        </p>
+      </div>
+    </small>
+  </body>
+</html>
+
