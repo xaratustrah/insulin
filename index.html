@@ -37,59 +37,68 @@
       <!-- do the calculation -->
       function calculate()
       {
+      <!-- Abschnitt -->
       var istbz = parseFloat(document.getElementById("istbz").value);
-      var vormittags = document.getElementById("vormittags");
+      var draussen = document.getElementById("draussen");
+      var innen = document.getElementById("innen");
       
-      var zielwert_vormittags = 170;
-      var zielwert_nachmittags = 150;
-      var zielwert_nachts = 0;
+      var zielwert_draussen = 170;
+      var zielwert_innen = 150;
 
-      if(vormittags.checked) {
-      BZ_total = (zielwert_vormittags - istbz) / 100;
+      if(draussen.checked) {
+      BZ_total = (zielwert_draussen - istbz) / 100;
       }
       else
       {
-      BZ_total = (zielwert_nachmittags - istbz) / 100;
+      BZ_total = (zielwert_innen - istbz) / 100;
       }
-      bzwert.value = Math.round(BZ_total*100)/100
+      bzwert.value = Math.round(BZ_total*100)/100;
       
       <!-- Abschnitt -->
       var menge = parseFloat(document.getElementById("menge").value);
       var dropdown = parseFloat(document.getElementById("dropdown").value);
-      var output = document.getElementById("output");
-      var draussen = document.getElementById("draussen");
-      var innen = document.getElementById("innen");
+      var output_KE = document.getElementById("output_KE");
+      var output_IE = document.getElementById("output_IE");
+
+      var vormittags = document.getElementById("vormittags");
+      var nachmittags = document.getElementById("nachmittags");
+      var nachts = document.getElementById("nachts");
 
       var KE_hundret = dropdown / 10;
       var KE_total = menge * KE_hundret / 100;
+      var IE_total = 0;
 
-      var KE_factor_innen = 0.5;
-      var KE_factor_draussen = 0.6;
+      var KE_factor_vormittags = 0.5;
+      var KE_factor_nachmittags = 0.3;
+      var KE_factor_nachts = 0.5;
 
-      if(draussen.checked){
-      KE_total = KE_total * KE_factor_draussen;
+      if(vormittags.checked){
+      IE_total = KE_total * KE_factor_vormittags;
       }
-      else
-      {
-      KE_total = KE_total * KE_factor_innen;
+      else if(nachmittags.checked){
+      IE_total = KE_total * KE_factor_nachmittags;
       }
-      
-      output.value = Math.round(KE_total*100)/100;
+      else{
+      IE_total = KE_total * KE_factor_nachts;
+      }
+
+      output_KE.value = Math.round(KE_total*100)/100;
+      output_IE.value = Math.round(IE_total*100)/100;
 
       <!-- Abschnitt -->
       var sport = document.getElementById("sport");
       var zusammen = document.getElementById("zusammen");
 
       if (sport.checked){
-      summe = minus_30p(KE_total - BZ_total);
+      summe = minus_30p(IE_total - BZ_total);
       }
       else
       {
-      summe = KE_total - BZ_total;
+      summe = IE_total - BZ_total;
       }
 
-      zusammen.value = Math.round(summe * 100)/100
-      }
+      zusammen.value = Math.round(summe * 100)/100;
+      
 
       <!-- Return 30% or the value -->
       function minus_30p(value)
@@ -97,6 +106,8 @@
       return value - value*30/100;
       }
 
+      }
+      
       <!-- Check for numbers only -->
       function numbersonly(myfield, e, dec)
       // copyright 1999 Idocs, Inc. http://www.idocs.com
@@ -164,7 +175,7 @@
       font-family: 'Lato', sans-serif;
       font-size: 14px;
       }
-      h4 {
+      heading {
       color: #fff;
       font-family: 'Lato', sans-serif;
       font-size: 18px;
@@ -191,17 +202,16 @@
   <!-- ##################################     MAIN SECTION     ########################################### -->
 
   <body onload="calculate();">
-    <div class="center">
-      <h4>Insulinrechner</h4>
-    </div>
+    <heading>Insulinrechner</heading>
+    <br>
+    <br>
     Istwert BZ: <input name="istbz" id="istbz" value="100" onchange="calculate();"
 		       onkeypress="return numbersonly(this, event)" maxlength="5" size="8"
 		       type="text">&nbsp;mg/dl
     <br>
     <br>
-    <input type="radio" name="tageszeit" id="vormittags" value="" checked onchange="calculate();"> Vorm.
-    <input type="radio" name="tageszeit" id="nachmittags" value="" onchange="calculate();"> Nachm.
-    <input type="radio" name="tageszeit" id="nachts" value="" onchange="calculate();"> Nachts
+    <input type="radio" id="innen" name="ort" value="" checked onchange="calculate();"> Innen
+    <input type="radio" id="draussen" name="ort" value="" onchange="calculate();"> Draußen
     <br>
     <br>
     sind: <input id="bzwert" value="" size="6" readonly></input>&nbsp;IE
@@ -211,7 +221,7 @@
     <hr>
     Menge: <input name="menge" id="menge" value="100" onchange="calculate();"
 		  onkeypress="return numbersonly(this, event)" maxlength="5" size="6"
-		  type="text">&nbsp;g
+		  type="text">&nbsp;g oder ml
     <br>
     <br>
     von
@@ -244,12 +254,17 @@
     </select>
     <br>
     <br>
-    <input type="radio" id="innen" name="ort" value="" checked onchange="calculate();"> Innen
-    <input type="radio" id="draussen" name="ort" value="" onchange="calculate();"> Draußen
-    <br>
-    <br>
     sind
-    <input id="output" value="" size="6" readonly></input>&nbsp;IE
+    <input id="output_KE" value="" size="6" readonly></input>&nbsp;KE
+    <br>
+    <br>
+    <input type="radio" name="tageszeit" id="vormittags" value="" checked onchange="calculate();"> Vorm.
+    <input type="radio" name="tageszeit" id="nachmittags" value="" onchange="calculate();"> Nachm.
+    <input type="radio" name="tageszeit" id="nachts" value="" onchange="calculate();"> Nachts
+    <br>
+    <br>
+    d.h.:
+    <input id="output_IE" value="" size="6" readonly></input>&nbsp;IE
     <br>
     <br>
     <!-- Abschnitt -->
