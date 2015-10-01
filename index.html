@@ -1,179 +1,270 @@
 <!DOCTYPE html>
+
+<!-- Copyright (C) 2015  Shahab Sanjari -->
+
+<!-- This program is free software; you can redistribute it and/or -->
+<!-- modify it under the terms of the GNU General Public License -->
+<!-- as published by the Free Software Foundation; either version 2 -->
+<!-- of the License, or (at your option) any later version. -->
+
+<!-- This program is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the -->
+<!-- GNU General Public License for more details. -->
+
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with this program; if not, write to the Free Software -->
+<!-- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. -->
+
 <html>
-  
-  <!-- ##################################     HEADER SECTION     ########################################### -->  
-  <head>
-    <!-- Set the charset to UTF-8 -->
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+
+<!-- ##################################     HEADER SECTION     ########################################### -->
+<head>
+  <!-- Set the charset to UTF-8 -->
+   <meta charset="UTF-8"> 
 
     <!--Resize for mobile displays -->
-    <meta name=viewport content='width=250'>
+    <meta name=viewport content='width=280'>
 
     <!--Check if JavaScript is active -->
     <noscript>
-      <img src="no_js.gif"
-           alt="Why did you disable JavaScript?"/>
+        <img src="no_js.gif"
+             alt="Why did you disable JavaScript?"/>
     </noscript>
 
     <!-- The actual code -->
     <script language="javascript">
-      <!-- do the calculation -->
-      function calculate()
-      {
-      var menge = parseFloat(document.getElementById("menge").value);
-      var dropdown = parseFloat(document.getElementById("dropdown").value);
-      var output = document.getElementById("output");
-      var sport = document.getElementById("sport")
-      
-      var KE_hundret = dropdown / 10;
-      var KE_total = menge * KE_hundret / 100;
-      var KE_factor = 0.5;
+        <!--
+        do the calculation -->
+        function calculate() {
+            var istbz = parseFloat(document.getElementById("istbz").value);
+            var vormittags = document.getElementById("vormittags");
 
-      if (!sport.checked){
-      <!-- output.value = "not checked"; -->
-      output.value = KE_total * KE_factor;
-      }
-      else
-      {
-      <!-- output.value="checked"; -->
-      output.value = minus_30p(KE_total * KE_factor);
-      }
-      <!-- output.value = KE_total * KE_factor; -->
+            var zielwert_vormittags = 170;
+            var zielwert_nachmittags = 150;
 
-      }
+            if (vormittags.checked) {
+                BZ_total = (zielwert_vormittags - istbz) / 100;
+            }
+            else {
+                BZ_total = (zielwert_nachmittags - istbz) / 100;
+            }
+            bzwert.value = Math.round(BZ_total * 100) / 100
 
-      <!-- Return 30% or the value -->
-      function minus_30p(value)
-      {
-      return value - value*30/100;
-      }
+            <!-- Abschnitt -->
+            var menge = parseFloat(document.getElementById("menge").value);
+            var dropdown = parseFloat(document.getElementById("dropdown").value);
+            var output = document.getElementById("output");
+            var draussen = document.getElementById("draussen");
+            var innen = document.getElementById("innen");
 
+            var KE_hundret = dropdown / 10;
+            var KE_total = menge * KE_hundret / 100;
 
-      <!-- Check for numbers only -->
-      function numbersonly(myfield, e, dec)
-      // copyright 1999 Idocs, Inc. http://www.idocs.com
-      // Distribute this script freely but keep this notice in place
-      {
-      var key;
-      var keychar;
+            var KE_factor_innen = 0.5;
+            var KE_factor_draussen = 0.6;
 
-      if(window.event)
-      key = window.event.keyCode;
-      else if(e)
-      key = e.which;
-      else
-      return true;
-      keychar = String.fromCharCode(key);
+            if (draussen.checked) {
+                KE_total = KE_total * KE_factor_draussen;
+            }
+            else {
+                KE_total = KE_total * KE_factor_innen;
+            }
 
-      // control keys
-      if((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13) || (key == 27))
-      return true;
+            output.value = Math.round(KE_total * 100) / 100;
 
-      // numbers
-      else if((("0123456789").indexOf(keychar) > -1))
-      return true;
+            <!-- Abschnitt -->
+            var sport = document.getElementById("sport");
+            var zusammen = document.getElementById("zusammen");
 
-      // decimal point jump
-      else if(dec && (keychar == ".")) {
-      myfield.form.elements[dec].focus();
-      return false;
-      } else
-      return false;
-      }
+            if (sport.checked) {
+                summe = minus_30p(KE_total - BZ_total);
+            }
+            else {
+                summe = KE_total - BZ_total;
+            }
 
-      <!-- Calculating last update -->
-      function last_update()
-      {
-      <!-- from http://www.webdesignerforum.co.uk/topic/32223-how-to-make-an-automatic-last-updated-datetime-in-html/  -->
-      months = ['January', 'Febraury', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      var d=new Date();
-      var weekday=new Array(7);
-      weekday[0]="Sunday";
-      weekday[1]="Monday";
-      weekday[2]="Tuesday";
-      weekday[3]="Wednesday";
-      weekday[4]="Thursday";
-      weekday[5]="Friday";
-      weekday[6]="Saturday";
+            zusammen.value = Math.round(summe * 100) / 100
+        }
 
-      var d = new Date();
-      (d.getFullYear());
+        <!-- Return 30% or the value -->
+        function minus_30p(value) {
+            return value - value * 30 / 100;
+        }
 
-      var theDate = new Date(document.lastModified);
-      theDate.setTime((theDate.getTime()+(60*60)) )
-      with (theDate) {
-      document.write("<i>Last updated "+weekday[getDay()]+' '+getDate()+' '+months[getMonth()]+' '+d.getFullYear()+' '+getHours()+':'+getMinutes()+" GMT</i>")
-      }
-      }
+        <!-- Check for numbers only -->
+        function numbersonly(myfield, e, dec)
+        // copyright 1999 Idocs, Inc. http://www.idocs.com
+        // Distribute this script freely but keep this notice in place
+        {
+            var key;
+            var keychar;
+
+            if (window.event)
+                key = window.event.keyCode;
+            else if (e)
+                key = e.which;
+            else
+                return true;
+            keychar = String.fromCharCode(key);
+
+            // control keys
+            if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13) || (key == 27))
+                return true;
+
+            // numbers
+            else if ((("0123456789").indexOf(keychar) > -1))
+                return true;
+
+            // decimal point jump
+            else if (dec && (keychar == ".")) {
+                myfield.form.elements[dec].focus();
+                return false;
+            } else
+                return false;
+        }
+
+        <!-- Calculating last update -->
+        function last_update() {
+        <
+            !--from
+            http://www.webdesignerforum.co.uk/topic/32223-how-to-make-an-automatic-last-updated-datetime-in-html/  -->
+                    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var d = new Date();
+            var weekday = new Array(7);
+            weekday[0] = "Sun";
+            weekday[1] = "Mon";
+            weekday[2] = "Tuey";
+            weekday[3] = "Wed";
+            weekday[4] = "Thu";
+            weekday[5] = "Fri";
+            weekday[6] = "Sat";
+
+            var d = new Date();
+            (d.getFullYear());
+
+            var theDate = new Date(document.lastModified);
+            theDate.setTime((theDate.getTime() + (60 * 60)))
+            with (theDate) {
+                document.write("<i>Aktualisiert: " + weekday[getDay()] + ' ' + getDate() + ' ' + months[getMonth()] + ' ' + d.getFullYear() + ' ' + getHours() + ':' + getMinutes() + " GMT</i>")
+            }
+        }
 
     </script>
 
     <!-- CSS syle sheet somes here -->
     <style type="text/css">
-      body {
-      background-color:#ffb1b4;
-      border: none;
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      }
-      h4 {
-      color: #fff;
-      font-family: 'Lato', sans-serif;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 1px
-      padding: 17px;
-      }
+        body {
+            background-color: #ffb1b4;
+            border: none;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+        }
+
+        h4 {
+            color: #fff;
+            font-family: 'Lato', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px padding : 10 px;
+        }
+
+        small {
+            color: #000;
+            font-size: 9px;
+            letter-spacing: 1px
+        }
+
+        .center {
+            margin: auto;
+            width: 95%;
+            padding: 10px;
+        }
     </style>
 
     <!--Here comes the document title-->
     <title>Insulinrechner</title>
-  </head>
+</head>
 
-  <!-- ##################################     MAIN SECTION     ########################################### -->
+<!-- ##################################     MAIN SECTION     ########################################### -->
 
-  <body onload="calculate();">
-    <h4>Rechner für Insulineinheiten</h4>
+<body onload="calculate();">
+<div class="center">
+    <h4>Insulinrechner</h4>
+</div>
+Istwert BZ: <input name="istbz" id="istbz" value="100" onchange="calculate();"
+                   onkeypress="return numbersonly(this, event)" maxlength="5" size="8"
+                   type="text">&nbsp;mg/dl
+<br>
+<br>
+<input type="radio" name="tageszeit" id="vormittags" value="" checked onchange="calculate();"> Vormittags
+<input type="radio" name="tageszeit" id="nachmittags" value="" onchange="calculate();"> Nachmittags
+<br>
+<br>
+sind: <input id="bzwert" value="" size="6" readonly></input>&nbsp;IE
+<br>
+<br>
+<!-- Abschnitt -->
+<hr>
+Menge: <input name="menge" id="menge" value="100" onchange="calculate();"
+              onkeypress="return numbersonly(this, event)" maxlength="5" size="6"
+              type="text">&nbsp;g
+<br>
+<br>
+von
+<select name="dropdown" id="dropdown" onchange="calculate();">
+  <option value="10">Apfel</option>
+  <option value="23">Banane</option>
+  <option value="10.1">Capri Sonne</option>
+  <option value="23">Cous Cous</option>
+  <option value="46">Croissant</option>
+  <option value="15.3">Fischstäbchen Bofrost</option>
+  <option value="17">Grießklößchen</option>
+  <option value="58">Haferflocken</option>
+  <option value="22">Kaiserschmarn</option>
+  <option value="18.75">Kartoffel gekocht</option>
+  <option value="18.75">Kartoffel pecen</option>
+  <option value="23.1">Kartoffel Rösti Bofrost</option>
+  <option value="15">Kartoffelpürre</option>
+  <option value="25.3">Käsespätzle</option>
+  <option value="84">Kellogs CornFlaks</option>
+  <option value="72">Knäckebrot</option>
+  <option value="45">Kreppel</option>
+  <option value="44">Laugenstange</option>
+  <option value="4.7">Milch</option>
+  <option value="29">Nudeln gekocht</option>
+  <option value="44">Pita Krumpir</option>
+  <option value="35">Pita Sir</option>
+  <option value="48">Roggenbrot</option>
+  <option value="17">Trauben</option>
+  <option value="49">Weißbrot</option>
+  <option value="50">Zitronenkuchen</option>
+</select>
+<br>
+<br>
+<input type="radio" id="innen" name="ort" value="" checked onchange="calculate();"> Innen
+<input type="radio" id="draussen" name="ort" value="" onchange="calculate();"> Draußen
+<br>
+<br>
+sind
+<input id="output" value="" size="6" readonly></input>&nbsp;IE
+<br>
+<br>
+<!-- Abschnitt -->
+<hr>
+<input type="checkbox" name="sport" id="sport" value="" onchange="calculate();">Sport?
+<br>
+<br>
+Zusammen: <input id="zusammen" value="" size="6" readonly></input>&nbsp;IE
+<br>
+<br>
+<hr>
 
-    Menge: <input name="menge" id="menge" value="100" onchange="calculate();"
-		  onkeypress="return numbersonly(this, event)" maxlength="3" size="8"
-		  type="text">&nbsp;g
+<!-- ##################################     FOOTER SECTION     ########################################### -->
+<small>Alle Angaben ohne Gewähr.
     <br>
-    <br>
-    von
-    <select name="dropdown" id="dropdown" onchange="calculate();">
-      <option value="30">Muffin</option>
-      <option value="20">Banane</option>
-      <option value="29.5">Nudeln</option>
-      <option value="35">Vollkornbrot</option>
-      <option value="25.4">Müsli</option>
-    </select>
-    <br>
-    <br>
-    <input type="checkbox" name="sport" id="sport" value="SPORT" onchange="calculate();">Sport?<br>
-    <br>
-    <br>
-    sind
-    <input id="output" value="" size="8" readonly></input>
-    Insulineinheiten.
-    <br>
-    <br>
-    <br>
-    <br>
-    <hr>
-
-    <!-- ##################################     FOOTER SECTION     ########################################### -->
-    <small>Alle Angaben ohne Gewähr.
-      <div id="textbox">
-        <p style="float:left">
-          <br>
-          <script language="javascript">last_update();</script>
-        </p>
-        <p style="float:right">
-          <br>
-        </p>
-      </div>
-    </small>
-  </body>
+    <script language="javascript">last_update();</script>
+</small>
+</body>
 </html>
 
