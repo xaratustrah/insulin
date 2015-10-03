@@ -52,7 +52,7 @@
       {
       BZ_total = (zielwert_innen - istbz) / 100;
       }
-      bzwert.value = Math.round(BZ_total*100)/100;
+      document.getElementById('bzwert').innerHTML = Math.round(BZ_total*100)/100;
       
       <!-- Abschnitt -->
       var menge = parseFloat(document.getElementById("menge").value);
@@ -82,12 +82,11 @@
       IE_total = KE_total * KE_factor_nachts;
       }
 
-      output_KE.value = Math.round(KE_total*100)/100;
-      output_IE.value = Math.round(IE_total*100)/100;
+      document.getElementById('output_KE').innerHTML = Math.round(KE_total*100)/100;
+      document.getElementById('output_IE').innerHTML = Math.round(IE_total*100)/100;
 
       <!-- Abschnitt -->
       var sport = document.getElementById("sport");
-      var zusammen = document.getElementById("zusammen");
 
       if (sport.checked){
       summe = minus_30p(IE_total - BZ_total);
@@ -97,7 +96,7 @@
       summe = IE_total - BZ_total;
       }
 
-      zusammen.value = Math.round(summe * 100)/100;
+      document.getElementById('zusammen').innerHTML = Math.round(summe * 100)/100;
       
 
       <!-- Return 30% or the value -->
@@ -170,8 +169,8 @@
     <!-- CSS syle sheet somes here -->
     <style type="text/css">
       body {
-      background-color:#ffb1b4;
-      border: none;
+      Background-color:#ffb1b4;
+      Border: none;
       font-family: 'Lato', sans-serif;
       font-size: 14px;
       }
@@ -192,6 +191,13 @@
       margin: auto;
       width: 95%;
       padding: 10px;
+      }
+      label{
+      font-size: 18px;
+      font-weight: 900;
+      color:#2a73c2;
+      color:#FF1820;
+      <!-- text-decoration: underline; -->
       }
     </style>
 
@@ -214,7 +220,7 @@
     <input type="radio" id="draussen" name="ort" value="" onchange="calculate();"> Draußen
     <br>
     <br>
-    sind: <input id="bzwert" value="" size="6" readonly></input>&nbsp;IE
+    sind: <label id="bzwert" value=""></label>&nbsp;IE
     <br>
     <br>
     <!-- Abschnitt -->
@@ -254,8 +260,8 @@
     </select>
     <br>
     <br>
-    sind
-    <input id="output_KE" value="" size="6" readonly></input>&nbsp;KE
+    sind    
+    <label id="output_KE"></label>&nbsp;KE. Am:
     <br>
     <br>
     <input type="radio" name="tageszeit" id="vormittags" value="" checked onchange="calculate();"> Vorm.
@@ -263,8 +269,8 @@
     <input type="radio" name="tageszeit" id="nachts" value="" onchange="calculate();"> Nachts
     <br>
     <br>
-    d.h.:
-    <input id="output_IE" value="" size="6" readonly></input>&nbsp;IE
+    sind es:
+    <label id="output_IE"></label>&nbsp;IE
     <br>
     <br>
     <!-- Abschnitt -->
@@ -272,7 +278,7 @@
     <input type="checkbox" name="sport" id="sport" value="" onchange="calculate();">Sport?
     <br>
     <br>
-    Zusammen: <input id="zusammen" value="" size="6" readonly></input>&nbsp;IE
+    Zusammen: <label id="zusammen"></label>&nbsp;IE
     <br>
     <br>
     <hr>
